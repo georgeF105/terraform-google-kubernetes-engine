@@ -479,6 +479,14 @@ resource "google_container_node_pool" "pools" {
     update = "45m"
     delete = "45m"
   }
+
+  depends_on = [time_sleep.wait_before_destroy]
+}
+
+resource "time_sleep" "wait_before_destroy" {
+  depends_on = [google_container_node_pool.pools]
+
+  destroy_duration = "60s"
 }
 
 resource "null_resource" "wait_for_cluster" {
